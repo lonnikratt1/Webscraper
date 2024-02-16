@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Crawler & Scraper</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  #output {
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+<h1>Web Crawler & Scraper</h1>
+<p>This application allows you to crawl or scrape a website.</p>
+<form id="inputForm">
+  <label for="option">Select an option:</label>
+  <select id="option">
+    <option value="crawl">Crawl Website</option>
+    <option value="scrape">Scrape Website</option>
+  </select>
+  <br>
+  <label for="url">Enter URL:</label>
+  <input type="text" id="url" required>
+  <br>
+  <button type="submit">Submit</button>
+</form>
+<div id="output"></div>
+
+<script>
+  document.getElementById('inputForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var option = document.getElementById('option').value;
+    var url = document.getElementById('url').value;
+    var outputDiv = document.getElementById('output');
+
+    if (option === 'crawl') {
+      outputDiv.innerHTML = '<p>Crawling...</p>';
+      crawlWebsite(url);
+    } else if (option === 'scrape') {
+      outputDiv.innerHTML = '<p>Scraping...</p>';
+      scrapeWebsite(url);
+    }
+  });
+
+  function crawlWebsite(url) {
+    fetch('crawl?url=' + encodeURIComponent(url))
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('output').innerHTML = data;
+      })
+      .catch(error => console.error('Error:', error));
+  }
+
+  function scrapeWebsite(url) {
+    fetch('scrape?url=' + encodeURIComponent(url))
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('output').innerHTML = data;
+      })
+      .catch(error => console.error('Error:', error));
+  }
+</script>
+</body>
+</html>
